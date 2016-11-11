@@ -1,0 +1,344 @@
+<!--  Most Common Passwords   -   Table
+
+ ======================================================= -->
+<!--
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.1', {'packages':['table']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawTable);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Password');
+        data.addColumn('number', '# Occurences');
+        data.addColumn('string', '%');
+        data.addRows([
+          ['{{ most_common['pass'][0] }}',  {v: 10000, f: '{{ most_common['count'][0] }}'},  '{{ most_common['percent'][0] }}'],
+          ['{{ most_common['pass'][1] }}',   {v:  8000,   f: '{{ most_common['count'][1] }}'}, '{{ most_common['percent'][1] }}'],
+          ['{{ most_common['pass'][2] }}',   {v:  8000,   f: '{{ most_common['count'][2] }}'}, '{{ most_common['percent'][2] }}'],
+          ['{{ most_common['pass'][3] }}',   {v:  8000,   f: '{{ most_common['count'][3] }}'}, '{{ most_common['percent'][3] }}'],
+          ['{{ most_common['pass'][4] }}',   {v:  8000,   f: '{{ most_common['count'][4] }}'}, '{{ most_common['percent'][4] }}'],
+          ['{{ most_common['pass'][5] }}',   {v:  8000,   f: '{{ most_common['count'][5] }}'}, '{{ most_common['percent'][5] }}'],
+          ['{{ most_common['pass'][6] }}',   {v:  8000,   f: '{{ most_common['count'][6] }}'}, '{{ most_common['percent'][6] }}'],
+           ['{{ most_common['pass'][7] }}',   {v:  8000,   f: '{{ most_common['count'][7] }}'}, '{{ most_common['percent'][7] }}'],
+            ['{{ most_common['pass'][8] }}',   {v:  8000,   f: '{{ most_common['count'][8] }}'}, '{{ most_common['percent'][8] }}'],
+          ['{{ most_common['pass'][9] }}',   {v:  8000,   f: '{{ most_common['count'][9] }}'}, '{{ most_common['percent'][9] }}']
+        ]);
+
+
+        var table = new google.visualization.Table(document.getElementById('chart_div_3'));
+
+
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+    </script>
+
+<!--    Detailed Overview - Bar Chart !!! -->
+
+
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart','BarChart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart_2);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart_2() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', '');
+        data.addColumn({type: 'string', role: 'annotation'});
+        data.addRows([
+          ['Total NTLM', {{ total_accounts }},'{{ total_accounts }}'],
+          ['Total LM', {{ totalLMs }},'{{ totalLMs }}'],
+          ['Total Unique Passwords', {{ unique_passwords }},'{{ unique_passwords }}'],
+          ['User=Password', {{ users_equal_passwords }},'{{ users_equal_passwords }}'],
+          ['Guessable Passwords', {{ guessable_passwords }},'{{ guessable_passwords }}'],
+          ['Users Without Passwords', 5,'0'],
+          ['Total 1-to-7', {{ pass_length['zero_to_seven_chars'] }},'{{ pass_length['zero_to_seven_chars'] }}'],
+        ]);
+
+        // Set chart options
+        var options = {
+
+            chartArea: {width: '50%'},
+             'width':700,
+             'height':300,
+              colors: [ 'blue'],
+              hAxis: {
+                  title: 'Total Accounts',
+                  minValue: 0,
+        },};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div_2'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+<!--     Table - Length !!! -->
+
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.1', {'packages':['table']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawTable);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Password Length');
+        data.addColumn('number', '# Accounts');
+        data.addColumn('string', '%');
+        data.addRows([
+          ['0 chars',  {v: 10000, f: '{{ pass_length['zero'] }}'},  '{{ pass_length['zero_percent'] }}'],
+          ['1 chars',   {v:  8000,   f: '{{ pass_length['one'] }}'}, '{{ pass_length['one_percent'] }}'],
+          ['2 chars', {v: 12500, f: '{{ pass_length['two'] }}'}, '{{ pass_length['two_percent'] }}'],
+          ['3 chars',   {v: 7000,  f: '{{ pass_length['three'] }}'}, '{{ pass_length['three_percent'] }}'],
+          ['4 chars',   {v: 3000,  f: '{{ pass_length['four'] }}'}, '{{ pass_length['four_percent'] }}'],
+          ['5 chars',   {v: 2000,  f: '{{ pass_length['five'] }}'}, '{{ pass_length['five_percent'] }}'],
+          ['6 chars',   {v: 3000,  f: '{{ pass_length['six'] }}'}, '{{ pass_length['six_percent'] }}'],
+          ['7 chars',   {v: 2000,  f: '{{ pass_length['seven'] }}'}, '{{ pass_length['seven_percent'] }}'],
+          ['8 chars',   {v: 2000,  f: '{{ pass_length['eight'] }}'}, '{{ pass_length['eight_percent'] }}'],
+          ['9 chars',   {v: 2000,  f: '{{ pass_length['nine'] }}'}, '{{ pass_length['nine_percent'] }}'],
+          ['10 chars',   {v: 2000,  f: '{{ pass_length['ten'] }}'}, '{{ pass_length['ten_percent'] }}'],
+          ['11 chars',   {v: 2000,  f: '{{ pass_length['eleven'] }}'}, '{{ pass_length['eleven_percent'] }}'],
+          ['12 chars',   {v: 2000,  f: '{{ pass_length['twelve'] }}'}, '{{ pass_length['twelve_percent'] }}'],
+          ['13 chars',   {v: 2000,  f: '{{ pass_length['thirsteen'] }}'}, '{{ pass_length['thirsteen_percent'] }}'],
+          ['14 chars',   {v: 2000,  f: '{{ pass_length['fourteen'] }}'}, '{{ pass_length['fourteen_percent'] }}']
+        ]);
+
+
+
+        var table = new google.visualization.Table(document.getElementById('chart_div'));
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+    </script>
+
+
+
+
+<!--    Chart - Length !!! -->
+
+
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart_4);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart_4() {
+
+      var data = google.visualization.arrayToDataTable([
+        ["Element", "Passwords", { role: "style" } ],
+        ["0", {{ pass_length['zero'] }}, "#76A7FA"],
+        ["1", {{ pass_length['one'] }}, "#76A7FA"],
+        ["2", {{ pass_length['two'] }}, "#76A7FA"],
+        ["3", {{ pass_length['three'] }}, "#76A7FA"],
+        ["4", {{ pass_length['four'] }}, "#76A7FA"],
+        ["5", {{ pass_length['five'] }}, "#76A7FA"],
+        ["6", {{ pass_length['six'] }}, "#76A7FA"],
+        ["7", {{ pass_length['seven'] }}, "#76A7FA"],
+        ["8", {{ pass_length['eight'] }}, "#76A7FA"],
+        ["9", {{ pass_length['nine'] }}, "#76A7FA"],
+        ["10", {{ pass_length['ten'] }}, "#76A7FA"],
+        ["11", {{ pass_length['eleven'] }}, "#76A7FA"],
+        ["12", {{ pass_length['twelve'] }}, "#76A7FA"],
+        ["13", {{ pass_length['thirsteen'] }}, "#76A7FA"],
+        ["14", {{ pass_length['fourteen'] }}, "#76A7FA"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+        title: "Length in Passwords Chart",
+        width: 600,
+        height: 400,
+        hAxis: {
+          title: 'Length',
+          minValue: 0},
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+        vAxis: {
+          title: 'Number of Passwords'
+        }
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart_div_4"));
+      chart.draw(view, options);
+      }
+    </script>
+
+
+
+
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.1', {'packages':['table']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawTable);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Password');
+        data.addColumn('number', '# Occurences');
+        data.addColumn('string', '%');
+        data.addRows([
+          ['{{ most_common['pass'][0] }}',  {v: 10000, f: '{{ most_common['count'][0] }}'},  '{{ most_common['percent'][0] }}'],
+          ['{{ most_common['pass'][1] }}',   {v:  8000,   f: '{{ most_common['count'][1] }}'}, '{{ most_common['percent'][1] }}'],
+          ['{{ most_common['pass'][2] }}',   {v:  8000,   f: '{{ most_common['count'][2] }}'}, '{{ most_common['percent'][2] }}'],
+          ['{{ most_common['pass'][3] }}',   {v:  8000,   f: '{{ most_common['count'][3] }}'}, '{{ most_common['percent'][3] }}'],
+          ['{{ most_common['pass'][4] }}',   {v:  8000,   f: '{{ most_common['count'][4] }}'}, '{{ most_common['percent'][4] }}'],
+          ['{{ most_common['pass'][5] }}',   {v:  8000,   f: '{{ most_common['count'][5] }}'}, '{{ most_common['percent'][5] }}'],
+          ['{{ most_common['pass'][6] }}',   {v:  8000,   f: '{{ most_common['count'][6] }}'}, '{{ most_common['percent'][6] }}'],
+           ['{{ most_common['pass'][7] }}',   {v:  8000,   f: '{{ most_common['count'][7] }}'}, '{{ most_common['percent'][7] }}'],
+            ['{{ most_common['pass'][8] }}',   {v:  8000,   f: '{{ most_common['count'][8] }}'}, '{{ most_common['percent'][8] }}'],
+          ['{{ most_common['pass'][9] }}',   {v:  8000,   f: '{{ most_common['count'][9] }}'}, '{{ most_common['percent'][9] }}']
+        ]);
+
+
+        var table = new google.visualization.Table(document.getElementById('chart_div_5'));
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+    </script>
+
+
+
+
+
+<!--  Table - Misc 1 !!!! -->
+
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.1', {'packages':['table']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawTable_misc_1);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawTable_misc_1() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Description');
+        data.addColumn('number', '# Total');
+        data.addRows([
+          ['Numbers Only',  {v: 10000, f: '{{ get_passwords_misc['numbers_only'] }}'}],
+          ['Lower Case Only',  {v: 10000, f: '{{ get_passwords_misc['lower_case_only'] }}'}],
+          ['Upper Case Only',  {v: 10000, f: '{{ get_passwords_misc['upper_case_only'] }}'}],
+          ['Special Char Only',  {v: 10000, f: '{{ get_passwords_misc['special_char_only'] }}'}]
+        ]);
+
+
+        var table = new google.visualization.Table(document.getElementById('chart_div_misc_1'));
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+    </script>
+
+
+
+
+
+ <!--  Table - Misc - 2 !!!! -->
+
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.1', {'packages':['table']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawTable_misc_2);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawTable_misc_2() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Description');
+        data.addColumn('number', '# Total');
+
+        data.addRows([
+          ['1st Upper last number',  {v: 10000, f: '{{ get_passwords_misc['FIRST_CAP_LAST_NUM_RE'] }}'}],
+          ['1st Upper last symbol',  {v: 10000, f: '{{ get_passwords_misc['FIRST_CAP_LAST_SYMBOL_RE'] }}'}],
+          ['1 Num at the end',  {v: 10000, f: '{{ get_passwords_misc['SINGLES_ON_END_RE'] }}'}],
+          ['2 Num at the end',  {v: 10000, f: '{{ get_passwords_misc['DOUBLES_ON_END_RE'] }}'}],
+          ['3 Num at the end',  {v: 10000, f: '{{ get_passwords_misc['TRIPLES_ON_END_RE'] }}'}]
+
+
+        ]);
+
+
+        var table = new google.visualization.Table(document.getElementById('chart_div_misc_2'));
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+    </script>
+
+
+ <!--  Table - Misc - 3 !!!! -->
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.1', {'packages':['table']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawTable_misc_3);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawTable_misc_3() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Description');
+        data.addColumn('number', '# Total');
+
+        data.addRows([
+          ['Lowercase & Numbers',  {v: 10000, f: '{{ get_passwords_misc['lowercase_numbers'] }}'}],
+          ['Uppercase & Numbers',  {v: 10000, f: '{{ get_passwords_misc['uppercase_numbers'] }}'}]
+
+
+        ]);
+
+
+        var table = new google.visualization.Table(document.getElementById('chart_div_misc_3'));
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+    </script>
