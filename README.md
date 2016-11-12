@@ -12,7 +12,7 @@ Features:
 - Detailed cracked passwords
 - Which accounts have been hacked
 
-![alt tag](https://github.com/danTaler/Dissector-Web/blob/master/screenshot_1.PNG)
+![alt tag](https://github.com/danTaler/Domain-Password-Analyzer/blob/master/screenshots/screenshot_1.PNG)
 
 ![alt tag](https://github.com/danTaler/Domain-Password-Analyzer/blob/master/screenshots/screenshot_2.PNG)
 
