@@ -14,9 +14,9 @@ Features:
 
 ![alt tag](https://github.com/danTaler/Dissector-Web/blob/master/screenshot_1.PNG)
 
-![alt tag](https://github.com/danTaler/Dissector-Web/blob/master/screenshot_2.PNG)
+![alt tag](https://github.com/danTaler/Domain-Password-Analyzer/blob/master/screenshots/screenshot_2.PNG)
 
-![alt tag](https://github.com/danTaler/Dissector-Web/blob/master/screenshot_3.PNG)
+![alt tag](https://github.com/danTaler/Domain-Password-Analyzer/blob/master/screenshots/screenshot_3.PNG)
 
 ### Software
 
@@ -39,6 +39,7 @@ Navigate to the: http://x.x.x.x:8889
  
  
  License
-----
+-------------
 
-MIT
+Apache LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
