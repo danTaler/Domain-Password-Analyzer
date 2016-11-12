@@ -13,6 +13,9 @@ class CLASS_passwordAudit():
 	dict = {}
 	dict_most_common_pass = {}
 
+
+	dict_passwords = {}
+
 	def show_client_name(self,client_name):
 
 		self.Client_Name = client_name
@@ -47,7 +50,8 @@ class CLASS_passwordAudit():
 
 				if data[0] != '':
 					self.list_passwords.append(data)
-
+					self.dict_passwords[i] = data
+					#print self.dict_passwords.keys()
 
 	def total_passwords(self):
 
@@ -56,21 +60,21 @@ class CLASS_passwordAudit():
 		return Total_passwords
 
 
+
 	'''
-			To DO:  Unique pass
+			Unique passwords
 	'''
 	def get_unique_passwords(self):
-		counter = 0
-		newList = []
-		output = set()
 
-		for x in self.list_passwords:
-			print x
-			#output.add(x)
-		#print output
-		mylist = list(set(self.list_passwords))
+		new_list = []
 
-		return counter
+		for i in self.list_passwords:
+			new_list.append(i[0])
+
+		myset = set(new_list)
+
+		return len(myset)
+
 
 
 
@@ -193,38 +197,42 @@ class CLASS_passwordAudit():
 
 	def most_common_password(self):
 
-		dict = {}
-		temp_list_passwords 		= []
-		temp_2_list_passwords 		= []
-
-		most_common_pass = max((self.list_passwords), key=self.list_passwords.count)
-
-		self.dict_most_common_pass['most_common_pass'] = most_common_pass[0]
-		self.dict_most_common_pass['most_common_pass_count'] = self.list_passwords.count(most_common_pass)
+		new_list = []
 
 		for i in self.list_passwords:
+			new_list.append(i[0])
 
-			if most_common_pass[0] != i[0]:
-				#print i[0]
-				temp_list_passwords.append(i[0])       # list without most common!
+		common_password = Counter(new_list).most_common(10)
 
+		self.dict_most_common_pass['most_common_pass'] = common_password[0][0]
+		self.dict_most_common_pass['most_common_pass_count'] = common_password[0][1]
 
-		second_most_common_pass = max((temp_list_passwords), key=temp_list_passwords.count)
+		self.dict_most_common_pass['2nd most common'] = common_password[1][0]
+		self.dict_most_common_pass['2nd most common count'] = common_password[1][1]
 
-		self.dict_most_common_pass['2nd most common'] = second_most_common_pass
-		self.dict_most_common_pass['2nd most common count'] = temp_list_passwords.count(second_most_common_pass)
+		self.dict_most_common_pass['3rd most common'] = common_password[2][0]
+		self.dict_most_common_pass['3rd most common count'] = common_password[2][1]
 
+		self.dict_most_common_pass['4th most common'] = common_password[3][0]
+		self.dict_most_common_pass['4th most common count'] = common_password[3][1]
 
-		for i in temp_list_passwords:
+		self.dict_most_common_pass['5th most common'] = common_password[4][0]
+		self.dict_most_common_pass['5th most common count'] = common_password[4][1]
 
-			if second_most_common_pass[0] != i[0]:
+		self.dict_most_common_pass['6th most common'] = common_password[5][0]
+		self.dict_most_common_pass['6th most common count'] = common_password[5][1]
 
-				temp_2_list_passwords.append(i)
+		self.dict_most_common_pass['7th most common'] = common_password[6][0]
+		self.dict_most_common_pass['7th most common count'] = common_password[6][1]
 
-		third_most_common_pass = max((temp_2_list_passwords), key=temp_2_list_passwords.count)
+		self.dict_most_common_pass['8th most common'] = common_password[7][0]
+		self.dict_most_common_pass['8th most common count'] = common_password[7][1]
 
-		self.dict_most_common_pass['3rd most common'] = third_most_common_pass
-		self.dict_most_common_pass['3rd most common count'] = temp_2_list_passwords.count(third_most_common_pass)
+		self.dict_most_common_pass['9th most common'] = common_password[8][0]
+		self.dict_most_common_pass['9th most common count'] = common_password[8][1]
+
+		self.dict_most_common_pass['10th most common'] = common_password[9][0]
+		self.dict_most_common_pass['10th most common count'] = common_password[9][1]
 
 
 

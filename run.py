@@ -189,14 +189,9 @@ def summary():
 @app.route('/passwordAudit')
 def passwordAudit():
 
-    #client_name = class_pass.show_client_name(session['client_name'])
-
-    #class_pass.load_pass_file()
-    #class_pass.PASSWORDS_into_list()
-
     get_total_passwords = class_pass.total_passwords()
 
-    #get_unique_passwords = class_pass.get_unique_passwords()
+    unique_passwords = class_pass.get_unique_passwords()
 
     password_length = class_pass.get_dict_password_length()
     most_common_pass = class_pass.get_dict_most_common_pass()
@@ -206,7 +201,7 @@ def passwordAudit():
     return render_template('passwordAudit.html', clientName=session['client_name'],total_passwords=get_total_passwords,
                            get_unique_passwords=0000,
                            password_length=password_length, most_common_pass=most_common_pass,
-                           misc_pass=misc_pass)
+                           misc_pass=misc_pass,unique_passwords=unique_passwords)
 
 
 # FILE UPLOAD PART

@@ -271,8 +271,13 @@ $(function () {
 
 
 <div class="row">
-  <div class="col-xs-6 col-md-2">
 
+
+  <div class="col-xs-6 col-md-3">
+
+      <!--  Users Table    -->
+
+      <div class="panel panel-primary">
                <table class="table table-hover">
                   <thead class="thead-inverse">
                     <tr>
@@ -308,12 +313,18 @@ $(function () {
                     </tr>
                   </tbody>
                 </table>
+      </div>
   </div>
+
+
+   <!--  Users Graph -->
 
   <div class="col-xs-6 col-md-4">
         <div id="container" style="min-width: 310px; max-width: 1000px; height: 400px; margin: 0 auto"></div>
   </div>
 
+
+   <!-- Pie Chart  -->
 
   <div class="col-xs-6 col-md-4">
     <div id="half_pie" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
@@ -321,25 +332,21 @@ $(function () {
 
 </div>
 
+
+  <!-- --------- Second ROW -->
+
+
 <div class="row">
 
-
-
     <br>
-
-    <div class="col-xs-6 col-md-4">
-
-         <div id="password_chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-    </div>
 
 
     <!--  Password Column Table      -->
 
-      <div class="col-xs-6 col-md-4">
+      <div class="col-xs-6 col-md-3">
 
          <h4><b><u>Passwords</u></b></h4>
-
+            <div class="panel panel-primary">
                  <table class="table table-hover">
                   <thead class="thead-inverse">
 
@@ -351,7 +358,7 @@ $(function () {
                     </tr>
                     <tr>
                       <td>Most common password</td>
-                      <td>{{ most_common_pass['most_common_pass'] }}</td>
+                      <td><strong><em>{{ most_common_pass['most_common_pass'] }}</em></strong></td>
                     </tr>
                      <tr>
                       <td>Passwords with less than 8 characters</td>
@@ -367,13 +374,25 @@ $(function () {
                     </tr>
                   </tbody>
                  </table>
-
+            </div>
           <br>
 
 
 
 
     </div>
+
+
+
+
+    <!-- Password Length Graph -->
+
+        <div class="col-xs-6 col-md-4">
+
+         <div id="password_chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+        </div>
+
 
 
     <!-- Pwned Area -->
