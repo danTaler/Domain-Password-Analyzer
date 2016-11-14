@@ -6,28 +6,33 @@ import urllib2
 from random import randint
 from time import sleep
 
+''''
+    This class:
+        takes the files (uploads) and store them for next processing.
+        store the files in lists and dictionary:
+            1. NTDS into lists
+            2. Passwords Only file into lists
+            3. Hash_Password file
+
+'''
+
 class CLASS_upload_files_edit():
 
-    ''' Input: two files: NTDS and CRACKED_PASSWORDS
+    ''' Input:  files: NTDS, Password-Only File, Hash-Password File.
         ------------------------------------------------------
     '''
 
-    Empty_Folder  = ''
-    Remember_file = False
+    # List =>  [['user1', '500', 'aad3b43..', '3dd97e0fd...'], ['use2', '502', 'aad3...', '2b7...'],...
+    list_NTDS_file      = []
+    list_passwords      = []
+    dict_passwords      = {}
 
     Client_Name      = ''
     file_name_NTDS   = ''
-    myDict           = dict()
-    dict_LM          = {}
-    list_LM          = []
-
-    list_NTDS_file   = []
-    number_of_usernames = 0
-    test_list = []
 
 
     '''
-        Client name passed by session
+        Getting List Functions:
     '''
     def show_client_name(self,client_name):
 
@@ -35,134 +40,141 @@ class CLASS_upload_files_edit():
         return self.Client_Name
 
 
-    '''
-        Loading NTDS and password files from uploads folder
-    '''
-    def get_files_from_upload_folder(this):
+    def get_ntds_list(self):
+        return self.list_NTDS_file
+
+
+    def get_password_list(self):
+        return self.list_passwords
+
+
+    def get_password_dict(self):
+        return self.dict_passwords
+
+
+
+    ''' Saving NTDS File into list '''
+
+    def NTDS_into_List(self):
 
         uploads_directory = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
 
-        ''' Check if folder is empty: '''
-        '''
-        if os.listdir(uploads_directory) == []:
-            this.Empty_Folder = 'Empty_Folder'
-            return 'Empty_Folder'
-
-
-        '''
-        '''
-        Check if File already exist in folder
-
-        if (this.Remember_file):
-            return 'FILE Exist'
-
-        '''
         for file_name in os.listdir(uploads_directory):
 
-            if file_name.startswith(this.Client_Name+'_NTDS_') and file_name.endswith(".txt"):
-                this.file_name_NTDS = file_name
+            if file_name.startswith(self.Client_Name+'_NTDS_') and file_name.endswith(".txt"):
+                self.file_name_NTDS = file_name
 
-    '''
-        readlines() , reads all the file into memory
-        f.read() , reads the whole file into a single string,
-        VS
-            List
-
-        Read the NTDS file into Dictionary:
-            Administrator:500:aad3b435b51404eeaad3b435b51404ee:b8de041ccb10de1dcab4027ad9013045:::
-
-        List:
-            ['name', '1066208', 'aebd4de384c7ec43aad3b435b51404ee', '7a21990fcd3d759941e45c490f143d5f']
-            ['name', '1067106', 'bb2ec3daf20ecbb9aad3b435b51404ee', 'bf4ce69af59bcbde63d5fda205467eb6']
-    '''
-
-    def NTDS_into_Dic(self):
 
         NTDS_file = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+self.file_name_NTDS
 
-        # To do:  check if file exist!
-        #
         with open(NTDS_file, 'r') as f:
 
             for i in f:
                 data = i.strip().split(':');
-
                 if data[0] != '':
-
-                    self.list_NTDS_file.append(data)
-
-                   # FOR DEBUG:
-                    #print self.list_NTDS_file
+                    self.list_NTDS_file.append(data) # Into List
 
 
-    def number_of_username_NTDS(self):
-
-        num_of_users = len(self.list_NTDS_file)
-
-        return num_of_users
 
 
-    def number_of_LMs(self):
+    ''' Saving Password Only file into list '''
 
-        count = 0
+    def PASSWORDS_into_list(self):
 
-        for LM in self.list_NTDS_file:
+		uploads_directory = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
 
-            if (LM[2] != 'aad3b435b51404eeaad3b435b51404ee'):
-               # print LM
-                count +=1
+		for file_name in os.listdir(uploads_directory):
 
-        return count
+			if file_name.startswith(self.Client_Name+'_passwords_') and file_name.endswith(".txt"):
+				file_name_passwords = file_name
 
+		Password_file = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+file_name_passwords
 
-    def users_contain_admin(self):
+		with open(Password_file,'r') as f:
 
-        count = 0
+			for i in f:
+				data = i.strip().split(':')
 
-        for admin in self.list_NTDS_file:
-
-            if (re.search(r'admin',admin[0], re.IGNORECASE)):
-               # print admin[0]
-                count +=1
-        return count
+				if data[0] != '':
+					self.list_passwords.append(data)
+					self.dict_passwords[i] = data
 
 
-    def users_contain_test(self):
-
-        count = 0
-
-        for test in self.list_NTDS_file:
-
-            if (re.search(r'test',test[0], re.IGNORECASE)):
-               # print test[0]
-                count +=1
-        return count
 
 
-    def users_contain_companyName(self):
+    def merge_ntds_with_hashPass_file(self):
 
-        count = 0
-        company_name = self.Client_Name
+		Hash_Pass_file = ''
+		NTDS_file = ''
 
-        for companyName in self.list_NTDS_file:
+		uploads_directory = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
+		for file_name in os.listdir(uploads_directory):
 
-            if (re.search(company_name,companyName[0], re.IGNORECASE)):
+			if file_name.startswith(self.Client_Name+'_hash_pass_') and file_name.endswith(".txt"):
+				Hash_Pass_file=file_name
 
-                count +=1
-        return count
+			if file_name.startswith(self.Client_Name+'_NTDS_') and file_name.endswith(".txt"):
+				NTDS_file = file_name
+
+		Hash_dict_1 = dict();
+
+		file_open = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+''+Hash_Pass_file
+
+		with open(file_open, 'r') as f:			# Hash:pass
+
+			for i in f:
+				data = i.strip().split(':');
+				Hash_dict_1[data[0]] = data[1].strip();
+
+		for key,value in Hash_dict_1.iteritems():
+			print key, value
 
 
-    def users_contain_serviceAccount(self):
+		print Hash_dict_1.items()
 
-        count = 0
 
-        for serviceAccount in self.list_NTDS_file:
+		Hash_dict_2 = dict();
 
-            if (re.search(r'\$',serviceAccount[0], re.IGNORECASE)):
+		''' NTDS File, can just load it from NTDS class in the future'''
 
-                count +=1
+		file_open = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+''+NTDS_file
+		with open(file_open, 'r') as f:			# Username:Hash
 
-        return count
+			for i in f:
+				data = i.strip().split(':');
+				Hash_dict_2[data[0]] = data[3].strip();
+
+
+		print Hash_dict_2.items()
+
+		user_hash_pass_list = []
+		dict_1 = {}
+
+		''' Merging the dictionaries '''
+		for username1,hash1 in Hash_dict_1.items():
+			print username1, hash1
+			for hash2,password in Hash_dict_2.items():
+				#print hash2, password
+				if hash1 == hash2:
+
+					all =  username1+':'+hash1+':'+password
+					user_hash_pass_list.append(username1+':'+hash1+':'+password)
+					#user_hash_pass_dict[username1].append(username1+':'+hash1+':'+password)
+					dict_1[username1] = all
+
+		print dict_1.items()
+
+		for username1,hash1 in Hash_dict_1.items():
+			print username1, hash1
+
+
+
+    ''' OLD -------- '''
+
+
+
+
+
 
 
     '''

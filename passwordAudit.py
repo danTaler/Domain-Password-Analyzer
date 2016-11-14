@@ -7,14 +7,10 @@ import re, os
 class CLASS_passwordAudit():
 
 	Client_Name 		= ''
-	file_name_passwords = ''
-	list_passwords 		= []
 
-	dict = {}
+	dict_length = {}
 	dict_most_common_pass = {}
 
-
-	dict_passwords = {}
 
 	def show_client_name(self,client_name):
 
@@ -23,39 +19,15 @@ class CLASS_passwordAudit():
 
 
 	def get_dict_password_length(self):
-		return self.dict
-
-
-	def load_pass_file(this):
-
-		uploads_directory = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
-
-		for file_name in os.listdir(uploads_directory):
-
-			if file_name.startswith(this.Client_Name+'_passwords_') and file_name.endswith(".txt"):
-				this.file_name_passwords = file_name
+		return self.dict_length
 
 
 
-	def PASSWORDS_into_list(self):
 
-		Password_file = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+self.file_name_passwords
 
-		''' Check if file exist already '''
+	def total_passwords(self,password_list):
 
-		with open(Password_file,'r') as f:
-
-			for i in f:
-				data = i.strip().split(':')
-
-				if data[0] != '':
-					self.list_passwords.append(data)
-					self.dict_passwords[i] = data
-					#print self.dict_passwords.keys()
-
-	def total_passwords(self):
-
-		Total_passwords = len(self.list_passwords)
+		Total_passwords = len(password_list)
 		#print Total_passwords
 		return Total_passwords
 
@@ -64,11 +36,11 @@ class CLASS_passwordAudit():
 	'''
 			Unique passwords
 	'''
-	def get_unique_passwords(self):
+	def get_unique_passwords(self,password_list):
 
 		new_list = []
 
-		for i in self.list_passwords:
+		for i in password_list:
 			new_list.append(i[0])
 
 		myset = set(new_list)
@@ -78,14 +50,14 @@ class CLASS_passwordAudit():
 
 
 
-	def password_length(self):
+	def password_length(self,list_passwords):
 
 		zero=one=two=three=four=five=six=seven=eight=nine=ten=eleven=twelve=thirsteen=fourteen=fifteen=zero_to_seven_chars = 0
 		over_eight_chars =0
 
 		dict = {'six': 0, 'one': 0, 'two':0, 'three':0, 'four':0, 'five':0, 'six':0}
 
-		for password in self.list_passwords:
+		for password in list_passwords:
 
 				#--length---
 				if len(password[0]) == 0:
@@ -142,51 +114,51 @@ class CLASS_passwordAudit():
 				if len(password[0]) < 8:
 					zero_to_seven_chars +=1
 
-		self.dict['zero'] 	= zero
-		self.dict['one'] 	= one
-		self.dict['two'] 	= two
-		self.dict['three'] 	= three
-		self.dict['four'] 	= four
-		self.dict['five'] 	= five
-		self.dict['six'] 	= six
-		self.dict['seven']	= seven
-		self.dict['eight'] 	= eight
-		self.dict['nine'] 	= nine
-		self.dict['ten'] 	= ten
-		self.dict['eleven'] 	= eleven
-		self.dict['twelve'] 	= twelve
-		self.dict['thirsteen'] 	= thirsteen
-		self.dict['fourteen'] 	= fourteen
-		self.dict['fifteen'] 	= fifteen
+		self.dict_length['zero'] 	= zero
+		self.dict_length['one'] 	= one
+		self.dict_length['two'] 	= two
+		self.dict_length['three'] 	= three
+		self.dict_length['four'] 	= four
+		self.dict_length['five'] 	= five
+		self.dict_length['six'] 	= six
+		self.dict_length['seven']	= seven
+		self.dict_length['eight'] 	= eight
+		self.dict_length['nine'] 	= nine
+		self.dict_length['ten'] 	= ten
+		self.dict_length['eleven'] 	= eleven
+		self.dict_length['twelve'] 	= twelve
+		self.dict_length['thirsteen'] 	= thirsteen
+		self.dict_length['fourteen'] 	= fourteen
+		self.dict_length['fifteen'] 	= fifteen
 
-		self.dict['over_eight_chars'] 	= over_eight_chars
+		self.dict_length['over_eight_chars'] 	= over_eight_chars
 
 		#zero_to_seven_chars = (zero + one + two + three + four + five + six + seven)
-		self.dict['zero_to_seven_chars'] = zero_to_seven_chars
+		self.dict_length['zero_to_seven_chars'] = zero_to_seven_chars
 
 
 		# Percentage by passwords or total users :
 		# ---
-		Tota_Accounts = self.total_passwords()
+		Tota_Accounts = self.total_passwords(list_passwords)
 
-		self.dict['zero_percent'] = "{0:.2f}%".format((zero / float(Tota_Accounts)) * 100)
-		self.dict['one_percent'] = "{0:.2f}%".format((one / float(Tota_Accounts)) * 100)
-		self.dict['two_percent'] = "{0:.2f}%".format((two / float(Tota_Accounts)) * 100)
-		self.dict['three_percent'] = "{0:.2f}%".format((three / float(Tota_Accounts)) * 100)
-		self.dict['four_percent'] = "{0:.2f}%".format((four / float(Tota_Accounts)) * 100)
-		self.dict['five_percent'] = "{0:.2f}%".format((five / float(Tota_Accounts)) * 100)
-		self.dict['six_percent'] = "{0:.2f}%".format((six / float(Tota_Accounts)) * 100)
-		self.dict['seven_percent'] = "{0:.2f}%".format((seven / float(Tota_Accounts)) * 100)
-		self.dict['eight_percent'] = "{0:.2f}%".format((eight / float(Tota_Accounts)) * 100)
-		self.dict['nine_percent'] = "{0:.2f}%".format((nine / float(Tota_Accounts)) * 100)
-		self.dict['ten_percent'] = "{0:.2f}%".format((ten / float(Tota_Accounts)) * 100)
-		self.dict['eleven_percent'] = "{0:.2f}%".format((eleven / float(Tota_Accounts)) * 100)
-		self.dict['twelve_percent'] = "{0:.2f}%".format((twelve / float(Tota_Accounts)) * 100)
-		self.dict['thirsteen_percent'] = "{0:.2f}%".format((thirsteen / float(Tota_Accounts)) * 100)
-		self.dict['fourteen_percent'] = "{0:.2f}%".format((fourteen / float(Tota_Accounts)) * 100)
-		self.dict['fifteen_percent'] = "{0:.2f}%".format((fifteen / float(Tota_Accounts)) * 100)
+		self.dict_length['zero_percent'] = "{0:.2f}%".format((zero / float(Tota_Accounts)) * 100)
+		self.dict_length['one_percent'] = "{0:.2f}%".format((one / float(Tota_Accounts)) * 100)
+		self.dict_length['two_percent'] = "{0:.2f}%".format((two / float(Tota_Accounts)) * 100)
+		self.dict_length['three_percent'] = "{0:.2f}%".format((three / float(Tota_Accounts)) * 100)
+		self.dict_length['four_percent'] = "{0:.2f}%".format((four / float(Tota_Accounts)) * 100)
+		self.dict_length['five_percent'] = "{0:.2f}%".format((five / float(Tota_Accounts)) * 100)
+		self.dict_length['six_percent'] = "{0:.2f}%".format((six / float(Tota_Accounts)) * 100)
+		self.dict_length['seven_percent'] = "{0:.2f}%".format((seven / float(Tota_Accounts)) * 100)
+		self.dict_length['eight_percent'] = "{0:.2f}%".format((eight / float(Tota_Accounts)) * 100)
+		self.dict_length['nine_percent'] = "{0:.2f}%".format((nine / float(Tota_Accounts)) * 100)
+		self.dict_length['ten_percent'] = "{0:.2f}%".format((ten / float(Tota_Accounts)) * 100)
+		self.dict_length['eleven_percent'] = "{0:.2f}%".format((eleven / float(Tota_Accounts)) * 100)
+		self.dict_length['twelve_percent'] = "{0:.2f}%".format((twelve / float(Tota_Accounts)) * 100)
+		self.dict_length['thirsteen_percent'] = "{0:.2f}%".format((thirsteen / float(Tota_Accounts)) * 100)
+		self.dict_length['fourteen_percent'] = "{0:.2f}%".format((fourteen / float(Tota_Accounts)) * 100)
+		self.dict_length['fifteen_percent'] = "{0:.2f}%".format((fifteen / float(Tota_Accounts)) * 100)
 
-		print 'making dictionary'
+
 
 	def get_dict_most_common_pass(self):
 
@@ -195,14 +167,15 @@ class CLASS_passwordAudit():
 #  1. Need to find most commons NTLM hashes   (Hashcat will only crack unique values)
 # 		Even the hashcat.pot file will display unique values
 
-	def most_common_password(self):
+	def most_common_password(self,password_list):
 
 		new_list = []
 
-		for i in self.list_passwords:
+		for i in password_list:
 			new_list.append(i[0])
 
 		common_password = Counter(new_list).most_common(10)
+
 
 		self.dict_most_common_pass['most_common_pass'] = common_password[0][0]
 		self.dict_most_common_pass['most_common_pass_count'] = common_password[0][1]
@@ -241,7 +214,7 @@ class CLASS_passwordAudit():
 #  1. Numbers only
 #  2. Lower Case Only
 #
-	def get_passwords_misc(self):
+	def get_passwords_misc(self,password_list):
 
 		pattern_numbers_only    	= re.compile("^[0-9]+$")
 		pattern_lowercase_only  	= re.compile("^[a-z]+$")
@@ -277,7 +250,7 @@ class CLASS_passwordAudit():
 
 		dict = {'numbers_only':[],'lowercase_only':[],'upper_case_only':[], 'special_char_only':[]}
 
-		for password in self.list_passwords:
+		for password in password_list:
 
 				if re.search(pattern_numbers_only,password[0]):
 					numbers_only = numbers_only + 1

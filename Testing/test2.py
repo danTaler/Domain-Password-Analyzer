@@ -16,26 +16,7 @@ pass_list = []
 Hash_dict_1 = dict();
 Hash_dict_2 = dict();
 
-with open(passwords_only, 'r') as f:
 
-	for i in f:
-		data = i.split();
-		pass_list.append(data[0])
-
-print pass_list
-
-a = Counter(pass_list).most_common(10)
-print a
-print a[1]
-print a[1][0]
-
-print '\n'
-
-
-
-#print c.most_common(3)
-
-print pass_dict.keys()
 
 with open(user_hash, 'r') as f:			# Username:Hash
 

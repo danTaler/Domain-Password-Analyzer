@@ -1,15 +1,18 @@
 #!/usr/bin/env python
+
 import os
 from flask import Flask, request, redirect, url_for
 from flask import render_template, session
 from flask import send_from_directory
 from werkzeug import secure_filename
 
+''' Import CLASSES '''
 from passwordAudit import CLASS_passwordAudit
 from uploadedFiles import CLASS_upload_files_edit
+from summary       import CLASS_summary
 from hackedAccount import class_haveibeenhacked
 
-import os
+
 
 '''
     General Configurations
@@ -18,10 +21,11 @@ import os
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
 app.config['ALLOWED_EXTENSIONS'] = set(['txt'])
-app.secret_key = 'F12Zr47j\3yX R~X@H!jmM]Lwf/,?AE'  #os.urandom(24)
+app.secret_key = os.urandom(24)
 
 ''' global Classes '''
-class_uploaded_files    = CLASS_upload_files_edit()
+class_upload_files      = CLASS_upload_files_edit()
+class_summary           = CLASS_summary()
 class_pass              = CLASS_passwordAudit()
 
 
@@ -48,12 +52,16 @@ def main():
 @app.route('/uploads', methods=['POST'])
 def uploadedFile():
 
-    MSG=MSG_2=''
+    MSG_NTDS=MSG_hash_pass=MSG_pass=''
 
     ''' Session for client name '''
     '''--------------------------------------------------'''
     if request.form['client_name']:
-        clientName = request.form['client_name']
+        full_company_name = request.form['client_name']            # Company.com.au
+        a = full_company_name.strip().split('.')
+
+        clientName = a[0]                                # Company = a[0]
+
         session['client_name'] = clientName
 
 
@@ -64,44 +72,60 @@ def uploadedFile():
         if file_NTDS and allowed_file(file_NTDS.filename):
             filename = secure_filename(file_NTDS.filename)
 
+            ''' Storing the file on local /uploads/ folder '''
             file_NTDS.save(os.path.join(app.config['UPLOAD_FOLDER'],clientName+'_NTDS_'+filename))
 
-            MSG_1 = 'OK'
+            ''' Upload files class. Processing the files into Lists/Dictionary.
+                Calling these functions once only !!! '''
+            client_name = class_upload_files.show_client_name(session['client_name'])
+
+
+            class_upload_files.NTDS_into_List()
+
+
+            MSG_NTDS = 'OK'
             session['NTDS'] = True
 
-            ''' Calling summary class functions once only !!! '''
-            client_name = class_uploaded_files.show_client_name(session['client_name'])
-            class_uploaded_files.get_files_from_upload_folder()
-
-            ''' storing the ntds file into list '''
-            class_uploaded_files.NTDS_into_Dic()
-
-
-
-    ''' Saving password file '''
+    ''' The Password Only File '''
     '''--------------------------------------------------'''
     if request.files['CRACKED_PASSWORDS']:
         CRACKED_PASSWORDS = request.files['CRACKED_PASSWORDS']
         if CRACKED_PASSWORDS and allowed_file(CRACKED_PASSWORDS.filename):
             filename = secure_filename(CRACKED_PASSWORDS.filename)
 
+            ''' Storing the file on local /uploads/ folder '''
             CRACKED_PASSWORDS.save(os.path.join(app.config['UPLOAD_FOLDER'], clientName+'_passwords_'+filename))
 
-            MSG_2 = 'OK'
 
+            client_name = class_upload_files.show_client_name(session['client_name'])
+
+            ''' storing the Password file into list '''
+            class_upload_files.PASSWORDS_into_list()
+
+
+            MSG_pass = 'OK'
             session['passwords'] = True
 
-            '''== password class =='''
-            client_name = class_pass.show_client_name(session['client_name'])
-            class_pass.load_pass_file()
-            class_pass.PASSWORDS_into_list()
+    ''' The Hash-Password File   '''
+    if request.files['hash_password']:
+        hash_password = request.files['hash_password']
+        if hash_password and allowed_file(hash_password.filename):
 
-            ''' Calling password class functions once only !!! '''
-            class_pass.password_length()
-            class_pass.most_common_password()
+            filename = secure_filename(hash_password.filename)
+
+            hash_password.save(os.path.join(app.config['UPLOAD_FOLDER'], clientName+'_hash_pass_'+filename))
+
+            MSG_hash_pass = 'OK'
 
 
-    return render_template('uploadFiles.html', NTDS=MSG_1, CRACKED_PASSWORDS=MSG_2 )
+            ''' Calling the password Class, but different funcion to merge files'''
+
+            #client_name = class_pass.show_client_name(session['client_name'])
+            class_pass.merge_ntds_with_hashPass_file()
+
+
+    return render_template('uploadFiles.html', MSG_NTDS=MSG_NTDS,MSG_pass=MSG_pass,
+                                                client_name=clientName,MSG_hash_pass=MSG_hash_pass)
 
 
 #
@@ -143,22 +167,32 @@ def summary():
 
             client_name = session['client_name']
 
-
-            numberOfUsers = class_uploaded_files.number_of_username_NTDS()
-
-            numberOfLM = class_uploaded_files.number_of_LMs()
-
-            usersContainAdmin = class_uploaded_files.users_contain_admin()
-            users_contain_test = class_uploaded_files.users_contain_test()
-            users_contain_companyName = class_uploaded_files.users_contain_companyName()
-            users_contain_serviceAccount = class_uploaded_files.users_contain_serviceAccount()
+            ''' Getting the NTDS and password list from File Upload Class '''
+            ntds_list                       = class_upload_files.get_ntds_list()
+            password_list                   = class_upload_files.get_password_list()
 
 
-            ''' == Class password functions == '''
-            password_length = class_pass.get_dict_password_length()
+            ''' == Functions of Summary Class == '''
+            numberOfUsers                   = class_summary.number_of_username_NTDS(ntds_list)
 
-            get_total_passwords = class_pass.total_passwords()
+            numberOfLM                      = class_summary.number_of_LMs(ntds_list)
 
+            usersContainAdmin               = class_summary.users_contain_admin(ntds_list)
+            users_contain_test              = class_summary.users_contain_test(ntds_list)
+            users_contain_companyName       = class_summary.users_contain_companyName(ntds_list, client_name)
+            users_contain_serviceAccount    = class_summary.users_contain_serviceAccount(ntds_list)
+
+
+
+            ''' == Functions of Password Class == '''
+
+            ''' Calling password class functions once only !!! '''
+            class_pass.password_length(password_list)
+            class_pass.most_common_password(password_list)
+
+
+            password_length                 = class_pass.get_dict_password_length()
+            get_total_passwords             = class_pass.total_passwords(password_list)
 
             Not_Cracked = (numberOfUsers - get_total_passwords)
 
@@ -174,10 +208,7 @@ def summary():
                            usersContainAdmin=usersContainAdmin, users_contain_test=users_contain_test,users_contain_companyName=users_contain_companyName,
                            users_contain_serviceAccount=users_contain_serviceAccount,
                             Not_Cracked=Not_Cracked,Cracked=get_total_passwords,
-                            password_length=password_length, most_common_pass=most_common_pass)
-
-
-
+                             password_length=password_length,most_common_pass=most_common_pass)
 
 
 
@@ -189,14 +220,16 @@ def summary():
 @app.route('/passwordAudit')
 def passwordAudit():
 
-    get_total_passwords = class_pass.total_passwords()
+    ''' Getting the password LIST from File Upload Class '''
+    password_list                   = class_upload_files.get_password_list()
 
-    unique_passwords = class_pass.get_unique_passwords()
+    get_total_passwords             = class_pass.total_passwords(password_list)
+    unique_passwords                = class_pass.get_unique_passwords(password_list)
 
-    password_length = class_pass.get_dict_password_length()
-    most_common_pass = class_pass.get_dict_most_common_pass()
+    password_length                 = class_pass.get_dict_password_length()
+    most_common_pass                = class_pass.get_dict_most_common_pass()
 
-    misc_pass = class_pass.get_passwords_misc()
+    misc_pass                       = class_pass.get_passwords_misc(password_list)
 
     return render_template('passwordAudit.html', clientName=session['client_name'],total_passwords=get_total_passwords,
                            get_unique_passwords=0000,

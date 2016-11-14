@@ -71,25 +71,29 @@
                     <div class="form-group">
 
                         <label for="company">Client Name:</label>
-                        <input type="text" class="form-control" id="company" name=client_name placeholder="example.com.au"> {{ client_name }}
+                        <input type="text" class="form-control" id="company" name=client_name placeholder="example.com.au">
+                        <p class="bg-success">{{ client_name }}</p>
                     </div>
 
                     <div class="form-group" >
                         <label for="inputEmail">pwdump output style</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <i>Username:500:aad3be:3dd97e5ea6:::</i>
-                        <input type="file" class="form-control" id="inputEmail" name=NTDS placeholder="Username:500:aad3be:3dd97e5ea6">{{ NTDS }}
+                        <input type="file" class="form-control" id="inputEmail" name=NTDS placeholder="Username:500:aad3be:3dd97e5ea6">
+                        <p class="bg-success">{{ MSG_NTDS }}</p>
                     </div>
 
                     <br>
                     <h4><u>Choose Either Upload:</u></h4>
                         <div class="form-group">
                             <label for="inputPassword">1. Only Password File</label>
-                            <input type="file" class="form-control" id="inputPassword" name=CRACKED_PASSWORDS placeholder="Password">{{ CRACKED_PASSWORDS }}
+                            <input type="file" class="form-control" id="inputPassword" name=CRACKED_PASSWORDS placeholder="Password">
+                            <p class="bg-success">{{ MSG_pass }}</p>
                         </div>
 
                         <div class="form-group">
-                            <label for="user_hash">2. Hash:Password Format</label>
-                            <input type="file" class="form-control" id="user_hash" name=user_hash placeholder="user_hash">{{ CRACKED_PASSWORDS }}
+                            <label for="hash_password">2. Hash:Password Format</label>
+                            <input type="file" class="form-control" id="hash_password" name=hash_password placeholder="hash_password">
+                            <p class="bg-success">{{ MSG_hash_pass }}</p>
                         </div>
 
 
