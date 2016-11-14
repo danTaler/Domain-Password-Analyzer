@@ -22,10 +22,12 @@ class CLASS_upload_files_edit():
         ------------------------------------------------------
     '''
 
-    # List =>  [['user1', '500', 'aad3b43..', '3dd97e0fd...'], ['use2', '502', 'aad3...', '2b7...'],...
-    list_NTDS_file      = []
+
+    list_NTDS_file      = []    # List =>  [['user1', '500', 'aad3b43..', '3dd97e0fd...'], ['use2', '502', 'aad3...', '2b7...'],...
     list_passwords      = []
     dict_passwords      = {}
+    list_Hash_pass      = []
+    list_user_hash_pass = []    #User:Hash:Password
 
     Client_Name      = ''
     file_name_NTDS   = ''
@@ -101,71 +103,58 @@ class CLASS_upload_files_edit():
 
 
 
+    def Hash_Pass_into_list(self):
+
+        Hash_Pass_file = ''
+        NTDS_file = ''
+
+        uploads_directory = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
+        for file_name in os.listdir(uploads_directory):
+
+            if file_name.startswith(self.Client_Name+'_hash_pass_') and file_name.endswith(".txt"):
+                 Hash_Pass_file=file_name
+
+        Hash_dict_1 = dict();
+
+        file_open = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+''+Hash_Pass_file
+
+        with open(file_open, 'r') as f:
+
+            for i in f:
+                #print i
+                data = i.strip().split(':');
+                #print data
+                #Hash_dict_1[data[0]] = data[1].strip();
+                self.list_Hash_pass.append(data)
+
+
+		#for key,value in Hash_dict_1.iteritems():
+		#	print key, value
+
+
+		#print Hash_dict_1.items()
+
+
 
     def merge_ntds_with_hashPass_file(self):
 
-		Hash_Pass_file = ''
-		NTDS_file = ''
 
-		uploads_directory = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
-		for file_name in os.listdir(uploads_directory):
+        ''' Merging the lists '''
+        for user_hash in self.list_NTDS_file:
+            #print user_hash[0],user_hash[3], 'NTLM_HASH'             #username:NTLM
 
-			if file_name.startswith(self.Client_Name+'_hash_pass_') and file_name.endswith(".txt"):
-				Hash_Pass_file=file_name
-
-			if file_name.startswith(self.Client_Name+'_NTDS_') and file_name.endswith(".txt"):
-				NTDS_file = file_name
-
-		Hash_dict_1 = dict();
-
-		file_open = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+''+Hash_Pass_file
-
-		with open(file_open, 'r') as f:			# Hash:pass
-
-			for i in f:
-				data = i.strip().split(':');
-				Hash_dict_1[data[0]] = data[1].strip();
-
-		for key,value in Hash_dict_1.iteritems():
-			print key, value
+            for hash_pass in self.list_Hash_pass:
+                #print hash_pass[0], hash_pass[1], 'hash_pass'
+                if user_hash[3] == hash_pass[0]:
+                    #all +=  user_hash[0]+':'+user_hash[3]+':'+hash_pass[1]+ '\n'
+                    self.list_user_hash_pass.append(user_hash[0]+':'+user_hash[3]+':'+hash_pass[1])
+                    #print 'HERE'
 
 
-		print Hash_dict_1.items()
+        #print self.list_user_hash_pass
 
 
-		Hash_dict_2 = dict();
 
-		''' NTDS File, can just load it from NTDS class in the future'''
-
-		file_open = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'+''+NTDS_file
-		with open(file_open, 'r') as f:			# Username:Hash
-
-			for i in f:
-				data = i.strip().split(':');
-				Hash_dict_2[data[0]] = data[3].strip();
-
-
-		print Hash_dict_2.items()
-
-		user_hash_pass_list = []
-		dict_1 = {}
-
-		''' Merging the dictionaries '''
-		for username1,hash1 in Hash_dict_1.items():
-			print username1, hash1
-			for hash2,password in Hash_dict_2.items():
-				#print hash2, password
-				if hash1 == hash2:
-
-					all =  username1+':'+hash1+':'+password
-					user_hash_pass_list.append(username1+':'+hash1+':'+password)
-					#user_hash_pass_dict[username1].append(username1+':'+hash1+':'+password)
-					dict_1[username1] = all
-
-		print dict_1.items()
-
-		for username1,hash1 in Hash_dict_1.items():
-			print username1, hash1
 
 
 

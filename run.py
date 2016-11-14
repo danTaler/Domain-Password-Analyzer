@@ -79,7 +79,7 @@ def uploadedFile():
                 Calling these functions once only !!! '''
             client_name = class_upload_files.show_client_name(session['client_name'])
 
-
+            ''' storing the NTDS file into list '''
             class_upload_files.NTDS_into_List()
 
 
@@ -110,19 +110,21 @@ def uploadedFile():
     if request.files['hash_password']:
         hash_password = request.files['hash_password']
         if hash_password and allowed_file(hash_password.filename):
-
             filename = secure_filename(hash_password.filename)
 
+            ''' Storing the file on local /uploads/ folder '''
             hash_password.save(os.path.join(app.config['UPLOAD_FOLDER'], clientName+'_hash_pass_'+filename))
 
-            MSG_hash_pass = 'OK'
 
+            ''' storing the Hash:Password file into list '''
+            class_upload_files.Hash_Pass_into_list()
 
-            ''' Calling the password Class, but different funcion to merge files'''
-
+            ''' Merging the Hash:Password with NTDS into User:Hash:Password'''
+            class_upload_files.merge_ntds_with_hashPass_file()
             #client_name = class_pass.show_client_name(session['client_name'])
-            class_pass.merge_ntds_with_hashPass_file()
 
+
+            MSG_hash_pass = 'OK'
 
     return render_template('uploadFiles.html', MSG_NTDS=MSG_NTDS,MSG_pass=MSG_pass,
                                                 client_name=clientName,MSG_hash_pass=MSG_hash_pass)
@@ -194,9 +196,9 @@ def summary():
             password_length                 = class_pass.get_dict_password_length()
             get_total_passwords             = class_pass.total_passwords(password_list)
 
-            Not_Cracked = (numberOfUsers - get_total_passwords)
+            Not_Cracked                     = (numberOfUsers - get_total_passwords)
 
-            most_common_pass = class_pass.get_dict_most_common_pass()
+            most_common_pass                = class_pass.get_dict_most_common_pass()
 
 
             ''' == class_haveibeenhacked == '''

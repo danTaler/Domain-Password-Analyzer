@@ -6,12 +6,7 @@ import urllib2
 from random import randint
 from time import sleep
 
-from uploadedFiles import CLASS_upload_files_edit
 
-''''
-
-
-'''
 
 class CLASS_summary():
 
@@ -20,18 +15,8 @@ class CLASS_summary():
         ------------------------------------------------------
     '''
 
-    Empty_Folder  = ''
-    Remember_file = False
-
     Client_Name      = ''
-    file_name_NTDS   = ''
-    myDict           = dict()
-    dict_LM          = {}
-    list_LM          = []
 
-    list_NTDS_file   = []
-    number_of_usernames = 0
-    test_list = []
 
 
     '''
