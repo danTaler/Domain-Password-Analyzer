@@ -11,6 +11,10 @@ class CLASS_passwordAudit():
 	dict_length = {}
 	dict_most_common_pass = {}
 
+	most_common_pass = ''
+
+	def get_most_common_pass(self):
+		return self.most_common_pass
 
 	def show_client_name(self,client_name):
 
@@ -48,7 +52,7 @@ class CLASS_passwordAudit():
 		return len(myset)
 
 
-
+	''' creates length and Most Common Single Password '''
 
 	def password_length(self,list_passwords):
 
@@ -57,61 +61,79 @@ class CLASS_passwordAudit():
 
 		dict = {'six': 0, 'one': 0, 'two':0, 'three':0, 'four':0, 'five':0, 'six':0}
 
+		most_common = Counter()
+
 		for password in list_passwords:
 
 				#--length---
-				if len(password[0]) == 0:
+				if len(password) == 0:
 					zero +=1
+					most_common['zero'] = zero
 
-				if len(password[0]) == 1:
+				if len(password) == 1:
 					one +=1
+					most_common['one'] = one
 
-				if len(password[0]) == 2:
+				if len(password) == 2:
 					two +=1
-
-				if len(password[0]) == 3:
+					most_common['two'] = two
+				if len(password) == 3:
 					three +=1
+					most_common['three'] = three
 
-				if len(password[0]) == 4:
+				if len(password) == 4:
 					four +=1
+					most_common['four'] = four
 
-				if len(password[0]) == 5:
+				if len(password) == 5:
 					five +=1
+					most_common['five'] = five
 
-				if len(password[0]) == 6:
+				if len(password) == 6:
 					six +=1
+					most_common['six'] = six
 
-				if len(password[0]) == 7:
+				if len(password) == 7:
 					seven +=1
+					most_common['seven'] = seven
 
-				if len(password[0]) == 8:
+				if len(password) == 8:
 					eight +=1
+					most_common['eight'] = eight
 
-				if len(password[0]) == 9:
+				if len(password) == 9:
 					nine +=1
+					most_common['nine'] = nine
 
-				if len(password[0]) == 10:
+				if len(password) == 10:
 					ten +=1
+					most_common['ten'] = ten
 
-				if len(password[0]) == 11:
+				if len(password) == 11:
 					eleven +=1
+					most_common['eleven'] = eleven
 
-				if len(password[0]) == 12:
+				if len(password) == 12:
 					twelve +=1
+					most_common['twelve'] = twelve
 
-				if len(password[0]) == 13:
+				if len(password) == 13:
 					thirsteen +=1
+					most_common['thirsteen'] = thirsteen
 
-				if len(password[0]) == 14:
+				if len(password) == 14:
 					fourteen +=1
+					most_common['fourteen'] = fourteen
 
-				if len(password[0]) == 15:
+				if len(password) == 15:
 					fifteen +=1
+					most_common['fifteen'] = fifteen
 
-				if len(password[0]) > 8:
+				if len(password) > 8:
 					over_eight_chars +=1
 
-				if len(password[0]) < 8:
+
+				if len(password) < 8:
 					zero_to_seven_chars +=1
 
 		self.dict_length['zero'] 	= zero
@@ -135,6 +157,10 @@ class CLASS_passwordAudit():
 
 		#zero_to_seven_chars = (zero + one + two + three + four + five + six + seven)
 		self.dict_length['zero_to_seven_chars'] = zero_to_seven_chars
+
+
+		''' Most common Password and Value '''
+		self.most_common_pass = most_common.most_common(1)
 
 
 		# Percentage by passwords or total users :
@@ -172,40 +198,45 @@ class CLASS_passwordAudit():
 		new_list = []
 
 		for i in password_list:
-			new_list.append(i[0])
+			new_list.append(i)
 
 		common_password = Counter(new_list).most_common(10)
 
+		try:
 
-		self.dict_most_common_pass['most_common_pass'] = common_password[0][0]
-		self.dict_most_common_pass['most_common_pass_count'] = common_password[0][1]
+			self.dict_most_common_pass['most_common_pass'] 			= common_password[0][0]
+			self.dict_most_common_pass['most_common_pass_count'] 	= common_password[0][1]
 
-		self.dict_most_common_pass['2nd most common'] = common_password[1][0]
-		self.dict_most_common_pass['2nd most common count'] = common_password[1][1]
+			self.dict_most_common_pass['2nd most common'] 			= common_password[1][0]
+			self.dict_most_common_pass['2nd most common count'] 	= common_password[1][1]
 
-		self.dict_most_common_pass['3rd most common'] = common_password[2][0]
-		self.dict_most_common_pass['3rd most common count'] = common_password[2][1]
+			self.dict_most_common_pass['3rd most common'] 			= common_password[2][0]
+			self.dict_most_common_pass['3rd most common count'] 	= common_password[2][1]
 
-		self.dict_most_common_pass['4th most common'] = common_password[3][0]
-		self.dict_most_common_pass['4th most common count'] = common_password[3][1]
+			self.dict_most_common_pass['4th most common'] 			= common_password[3][0]
+			self.dict_most_common_pass['4th most common count'] 	= common_password[3][1]
 
-		self.dict_most_common_pass['5th most common'] = common_password[4][0]
-		self.dict_most_common_pass['5th most common count'] = common_password[4][1]
+			self.dict_most_common_pass['5th most common'] 			= common_password[4][0]
+			self.dict_most_common_pass['5th most common count'] 	= common_password[4][1]
 
-		self.dict_most_common_pass['6th most common'] = common_password[5][0]
-		self.dict_most_common_pass['6th most common count'] = common_password[5][1]
+			self.dict_most_common_pass['6th most common'] 			= common_password[5][0]
+			self.dict_most_common_pass['6th most common count'] 	= common_password[5][1]
 
-		self.dict_most_common_pass['7th most common'] = common_password[6][0]
-		self.dict_most_common_pass['7th most common count'] = common_password[6][1]
+			self.dict_most_common_pass['7th most common'] 			= common_password[6][0]
+			self.dict_most_common_pass['7th most common count'] 	= common_password[6][1]
 
-		self.dict_most_common_pass['8th most common'] = common_password[7][0]
-		self.dict_most_common_pass['8th most common count'] = common_password[7][1]
+			self.dict_most_common_pass['8th most common'] 			= common_password[7][0]
+			self.dict_most_common_pass['8th most common count'] 	= common_password[7][1]
 
-		self.dict_most_common_pass['9th most common'] = common_password[8][0]
-		self.dict_most_common_pass['9th most common count'] = common_password[8][1]
+			self.dict_most_common_pass['9th most common'] 			= common_password[8][0]
+			self.dict_most_common_pass['9th most common count'] 	= common_password[8][1]
 
-		self.dict_most_common_pass['10th most common'] = common_password[9][0]
-		self.dict_most_common_pass['10th most common count'] = common_password[9][1]
+			self.dict_most_common_pass['10th most common'] 			= common_password[9][0]
+			self.dict_most_common_pass['10th most common count'] 	= common_password[9][1]
+
+		except IndexError:
+			pass
+
 
 
 
@@ -307,48 +338,14 @@ class CLASS_passwordAudit():
 		return dict
 
 
+	#def ADMINs_with_weak_password(self,usernames):
+
+
+
+
+
+
 '''
-
-
-
-	def get_most_common_single_password(self,myDictionary):
-	#	print myDictionary['count']
-	#	print myDictionary.keys()
-
-		for b in myDictionary.items():
-			print  b[1]
-			#print b['pass']
-		#maximum = max(myList['count'])
-
-		return 333
-
-
-
-		Tota_Accounts = self.get_total_accounts()
-
-		list1 = []
-		for line in f:
-		 list1.append(line)
-
-		counter = Counter(list1)
-
-		d = {'pass':[],'count':[],'percent':[]}
-		#counter = Counter(list1)
-
-		for word, count in counter.most_common(10):
-
-			a = "{0:.2f}%".format((count / float(Tota_Accounts)) * 100)
-			d['percent'].append(a)
-			d['pass'].append(word)
-			d['count'].append(count)
-
-		return d
-
-
-
-	def get_guessable_passwords(self):
-		num_lines = sum(1 for line in open(FILE_GUESSABLE_PASSWORDS))
-		return num_lines
 
 
 	def users_equal_passwords(self):

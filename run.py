@@ -60,7 +60,7 @@ def uploadedFile():
         full_company_name = request.form['client_name']            # Company.com.au
         a = full_company_name.strip().split('.')
 
-        clientName = a[0]                                # Company = a[0]
+        clientName = a[0]                                          # Company = a[0], com = a[1]
 
         session['client_name'] = clientName
 
@@ -101,10 +101,12 @@ def uploadedFile():
 
             ''' storing the Password file into list '''
             class_upload_files.PASSWORDS_into_list()
+            class_upload_files.make_password_list()
 
 
             MSG_pass = 'OK'
             session['passwords'] = True
+            session['hash_password'] = False
 
     ''' The Hash-Password File   '''
     if request.files['hash_password']:
@@ -118,12 +120,13 @@ def uploadedFile():
 
             ''' storing the Hash:Password file into list '''
             class_upload_files.Hash_Pass_into_list()
+            class_upload_files.make_passwords_of_hash_pass_file()
 
             ''' Merging the Hash:Password with NTDS into User:Hash:Password'''
             class_upload_files.merge_ntds_with_hashPass_file()
             #client_name = class_pass.show_client_name(session['client_name'])
 
-
+            session['hash_password'] = True
             MSG_hash_pass = 'OK'
 
     return render_template('uploadFiles.html', MSG_NTDS=MSG_NTDS,MSG_pass=MSG_pass,
@@ -167,11 +170,11 @@ def summary():
         if 'NTDS' in session:
             print ' ntds in session !!!'
 
-            client_name = session['client_name']
+            client_name                 = session['client_name']
+            has_hash_password_file      = session['hash_password']
 
             ''' Getting the NTDS and password list from File Upload Class '''
             ntds_list                       = class_upload_files.get_ntds_list()
-            password_list                   = class_upload_files.get_password_list()
 
 
             ''' == Functions of Summary Class == '''
@@ -185,20 +188,40 @@ def summary():
             users_contain_serviceAccount    = class_summary.users_contain_serviceAccount(ntds_list)
 
 
+            password_list =''
+            if (has_hash_password_file == True):
+                #class_upload_files.make_passwords_of_hash_pass_file()
+                password_list = class_upload_files.get_passwords_of_hash_pass_file_PASSWORDSonly() # ['pass', 'pass1', 'pass2', 'pass3']
+
+
+            else:
+                print 'no hash_file'
+                #class_upload_files.make_password_list()
+                password_list                   = class_upload_files.get_password_list_updated()
+                                                                                #old: ['pass'], ['pass1'], ['pass2'],
+                                                                                                    #new: ['pass', 'pass1', 'pass2', 'pass3']
 
             ''' == Functions of Password Class == '''
 
             ''' Calling password class functions once only !!! '''
             class_pass.password_length(password_list)
             class_pass.most_common_password(password_list)
+            user_hash_pass = class_upload_files.get_user_hash_pass()
+
+            most_common_single_pass         = class_pass.get_most_common_pass()
 
 
             password_length                 = class_pass.get_dict_password_length()
+
+
+            Admins                          =   class_summary.ADMINs_with_Weak_pass(user_hash_pass)
+            Tests                           =   class_summary.TESTs_with_Weak_pass(user_hash_pass)
+
             get_total_passwords             = class_pass.total_passwords(password_list)
 
             Not_Cracked                     = (numberOfUsers - get_total_passwords)
 
-            most_common_pass                = class_pass.get_dict_most_common_pass()
+            most_common_passwords                = class_pass.get_dict_most_common_pass()
 
 
             ''' == class_haveibeenhacked == '''
@@ -210,7 +233,8 @@ def summary():
                            usersContainAdmin=usersContainAdmin, users_contain_test=users_contain_test,users_contain_companyName=users_contain_companyName,
                            users_contain_serviceAccount=users_contain_serviceAccount,
                             Not_Cracked=Not_Cracked,Cracked=get_total_passwords,
-                             password_length=password_length,most_common_pass=most_common_pass)
+                             password_length=password_length,most_common_pass=most_common_passwords,most_common_single_pass=most_common_single_pass,
+                                   Admins=Admins,Tests=Tests)
 
 
 
@@ -223,7 +247,8 @@ def summary():
 def passwordAudit():
 
     ''' Getting the password LIST from File Upload Class '''
-    password_list                   = class_upload_files.get_password_list()
+    class_upload_files.make_password_list()
+    password_list                   = class_upload_files.get_password_list_updated()
 
     get_total_passwords             = class_pass.total_passwords(password_list)
     unique_passwords                = class_pass.get_unique_passwords(password_list)

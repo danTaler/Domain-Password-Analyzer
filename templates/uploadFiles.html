@@ -68,6 +68,7 @@
             <div class="bs-example">
 
                 <form method=POST enctype=multipart/form-data action="/uploads">
+                    <blockquote>
                     <div class="form-group">
 
                         <label for="company">Client Name:</label>
@@ -81,21 +82,25 @@
                         <input type="file" class="form-control" id="inputEmail" name=NTDS placeholder="Username:500:aad3be:3dd97e5ea6">
                         <p class="bg-success">{{ MSG_NTDS }}</p>
                     </div>
+                    </blockquote>
 
                     <br>
+
                     <h4><u>Choose Either Upload:</u></h4>
+                    <blockquote>
                         <div class="form-group">
                             <label for="inputPassword">1. Only Password File</label>
                             <input type="file" class="form-control" id="inputPassword" name=CRACKED_PASSWORDS placeholder="Password">
                             <p class="bg-success">{{ MSG_pass }}</p>
                         </div>
-
+                        <br>
                         <div class="form-group">
                             <label for="hash_password">2. Hash:Password Format</label>
                             <input type="file" class="form-control" id="hash_password" name=hash_password placeholder="hash_password">
                             <p class="bg-success">{{ MSG_hash_pass }}</p>
                         </div>
-
+                    </blockquote>
+                        *For better results, upload the 'Hash:Password' format instead of the Passwords Only File
 
                     <br><br>
 
@@ -109,7 +114,7 @@
 
 
             <br>
-            *For better results, upload the 'Hash:Password' format instead of the Passwords Only File
+
 
 
 

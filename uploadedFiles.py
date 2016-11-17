@@ -25,9 +25,11 @@ class CLASS_upload_files_edit():
 
     list_NTDS_file      = []    # List =>  [['user1', '500', 'aad3b43..', '3dd97e0fd...'], ['use2', '502', 'aad3...', '2b7...'],...
     list_passwords      = []
+    list_passwords_updated = []
     dict_passwords      = {}
-    list_Hash_pass      = []
-    list_user_hash_pass = []    #User:Hash:Password
+    list_Hash_pass      = []            #   hash:hash
+    list_Hash_pass_PasswordOnly = []    #   passwordsOnly
+    list_user_hash_pass = []            #   User:Hash:Password
 
     Client_Name      = ''
     file_name_NTDS   = ''
@@ -46,12 +48,28 @@ class CLASS_upload_files_edit():
         return self.list_NTDS_file
 
 
-    def get_password_list(self):
-        return self.list_passwords
+    def make_password_list(self):
+        for i in self.list_passwords:                   #the list is: ['xx].['xx'],['xx']  List of lists
+            self.list_passwords_updated.append(i[0])    #making the list: ['pass', 'pass1', 'pass2', 'pass3']
 
+
+    def get_password_list_updated(self):
+        return self.list_passwords_updated      #returning the list: ['pass', 'pass1', 'pass2', 'pass3']
 
     def get_password_dict(self):
         return self.dict_passwords
+
+    def make_passwords_of_hash_pass_file(self):
+        for x in self.list_Hash_pass:
+
+            self.list_Hash_pass_PasswordOnly.append(x[1])
+
+    def get_passwords_of_hash_pass_file_PASSWORDSonly(self):
+        return self.list_Hash_pass_PasswordOnly
+
+
+    def get_user_hash_pass(self):               # Get ['USER:HASH:PASSWORD', 'USER:HASH:PASSWORD']
+        return self.list_user_hash_pass
 
 
 
@@ -103,6 +121,7 @@ class CLASS_upload_files_edit():
 
 
 
+    ''' Saving Hash_Pasword file into list '''
     def Hash_Pass_into_list(self):
 
         Hash_Pass_file = ''
@@ -158,10 +177,6 @@ class CLASS_upload_files_edit():
 
 
 
-    ''' OLD -------- '''
-
-
-
 
 
 
@@ -209,53 +224,6 @@ class CLASS_upload_files_edit():
             print 'No kittez. Got an error code:', e
 
 
-    # Stich all passwords to USERS:HASHES
-
-    # Create a dictionary file of:
-    #   username: (username,ID, LM, NTLM, password)
-    # and
-    #  username: (username,ID, LM, NTLM, < > )
-
-    def combine_USER_HASH_PASS(self,NTDS,file_GUESSABLE):
-
-        dict_NTDS                = dict()
-        dict_guessable_passwords = dict()
-        dict_masks_passwords     = dict()
-
-        file_path = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
-        NTDS = NTDS
-        file_GUESSABLE = file_GUESSABLE
 
 
-        with open(file_path+'NTDS.txt', 'r') as f:
 
-            for i in f:
-                data = i.strip().split(':');
-
-                if data[0] != '':
-                    dict_NTDS[data[0]] = data[3],data[1]
-  #                  dict_NTDS[data[1]] = data[1]
-
-        #print dict_NTDS.items()
-        #print dict_NTDS.keys()
-
-        with open(file_path+'rockyou.txt','r') as f:
-            for j in f:
-                data = j.strip().split(':')
-                dict_guessable_passwords[data[0]] = data[1]
-
-
-        dict_USER_HASH_PASS = {}
-
-        for hashValue_passFile, password in dict_guessable_passwords.iteritems():
-
-            for username, hashValue_NTDS in dict_NTDS.iteritems():
-
-                if hashValue_NTDS == hashValue_passFile:
-                    #print 'found ' + username, hashValue_NTDS, password
-
-                    dict_USER_HASH_PASS[username] = username,hashValue_NTDS, password
-
-      #  print dict_USER_HASH_PASS
-
-        return dict_USER_HASH_PASS

@@ -1,13 +1,16 @@
 # Domain Password Analyzer (DPA)
 
-PDA is a Windows Domain user/password analyzer and visualizer assessment. This is a web based service that takes a two files as input:
+DPA is a Windows Domain user/password analyzer and a visualizer assessment. This is a web based service that takes the following files as input:
 -Windows NTDS
 -Password file (Cracked NTDS)
+ or
+-Hash Password file (Hashcat output)
+
 
 The results are disaplayed into detailes in a web interface.
 
 Features:
-- Domain user information (number of users, suspicious names in use)
+- Domain user information (number of users, suspicious names in use...)
 - NTLM and LM in use
 - Detailed cracked passwords
 - Which accounts have been hacked
@@ -17,6 +20,7 @@ Features:
 ![alt tag](https://github.com/danTaler/Domain-Password-Analyzer/blob/master/screenshots/screenshot_2.PNG)
 
 ![alt tag](https://github.com/danTaler/Domain-Password-Analyzer/blob/master/screenshots/screenshot_3.PNG)
+
 
 ### Software
 

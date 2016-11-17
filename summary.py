@@ -72,11 +72,10 @@ class CLASS_summary():
     def users_contain_companyName(self,ntds_list,client_name):
 
         count = 0
-        company_name = client_name
 
         for companyName in ntds_list:
 
-            if (re.search(company_name,companyName[0], re.IGNORECASE)):
+            if (re.search(client_name,companyName[0], re.IGNORECASE)):
 
                 count +=1
         return count
@@ -93,6 +92,38 @@ class CLASS_summary():
                 count +=1
 
         return count
+
+
+    ''' Summary - Password section '''
+
+    def ADMINs_with_Weak_pass(self,list_user_hash_pass):
+
+        count = 0
+
+        for username in list_user_hash_pass:
+            user_striped = username.strip().split(':')
+
+            if (re.search(r'admin',user_striped[0], re.IGNORECASE)):
+
+                count +=1
+
+        return count
+
+
+    def TESTs_with_Weak_pass(self,list_user_hash_pass):
+
+        count = 0
+
+        for username in list_user_hash_pass:
+            user_striped = username.strip().split(':')
+
+            if (re.search(r'test',user_striped[0], re.IGNORECASE)):
+
+                count +=1
+
+        return count
+
+
 
 
     '''
@@ -137,54 +168,3 @@ class CLASS_summary():
         except URLError, e:
             print 'No kittez. Got an error code:', e
 
-
-    # Stich all passwords to USERS:HASHES
-
-    # Create a dictionary file of:
-    #   username: (username,ID, LM, NTLM, password)
-    # and
-    #  username: (username,ID, LM, NTLM, < > )
-
-    def combine_USER_HASH_PASS(self,NTDS,file_GUESSABLE):
-
-        dict_NTDS                = dict()
-        dict_guessable_passwords = dict()
-        dict_masks_passwords     = dict()
-
-        file_path = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
-        NTDS = NTDS
-        file_GUESSABLE = file_GUESSABLE
-
-
-        with open(file_path+'NTDS.txt', 'r') as f:
-
-            for i in f:
-                data = i.strip().split(':');
-
-                if data[0] != '':
-                    dict_NTDS[data[0]] = data[3],data[1]
-  #                  dict_NTDS[data[1]] = data[1]
-
-        #print dict_NTDS.items()
-        #print dict_NTDS.keys()
-
-        with open(file_path+'rockyou.txt','r') as f:
-            for j in f:
-                data = j.strip().split(':')
-                dict_guessable_passwords[data[0]] = data[1]
-
-
-        dict_USER_HASH_PASS = {}
-
-        for hashValue_passFile, password in dict_guessable_passwords.iteritems():
-
-            for username, hashValue_NTDS in dict_NTDS.iteritems():
-
-                if hashValue_NTDS == hashValue_passFile:
-                    #print 'found ' + username, hashValue_NTDS, password
-
-                    dict_USER_HASH_PASS[username] = username,hashValue_NTDS, password
-
-      #  print dict_USER_HASH_PASS
-
-        return dict_USER_HASH_PASS
