@@ -277,6 +277,8 @@ $(function () {
 
       <!--  Users Table    -->
 
+    <legend><h3> Users</h3></legend>
+
       <div class="panel panel-primary">
 
                <table class="table table-hover">
@@ -315,12 +317,15 @@ $(function () {
                   </tbody>
                 </table>
       </div>
+
   </div>
 
 
    <!--  Users Graph -->
 
+
   <div class="col-xs-6 col-md-4">
+       <legend><h3> Users Graph</h3></legend>
         <div id="container" style="min-width: 310px; max-width: 1000px; height: 400px; margin: 0 auto"></div>
   </div>
 
@@ -328,6 +333,7 @@ $(function () {
    <!-- Pie Chart  -->
 
   <div class="col-xs-6 col-md-4">
+       <legend><h3> Total Cracked</h3></legend>
     <div id="half_pie" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
  </div>
 
@@ -345,8 +351,8 @@ $(function () {
     <!--  Password Column Table      -->
 
       <div class="col-xs-6 col-md-3">
+         <legend><h3> Passwords</h3></legend>
 
-         <h4><b><u>Passwords</u></b></h4>
             <div class="panel panel-primary">
                  <table class="table table-hover">
                   <thead class="thead-inverse">
@@ -399,7 +405,7 @@ $(document).ready(function(){
     <!-- Password Length Graph -->
 
         <div class="col-xs-6 col-md-4">
-
+         <legend><h3> Passwords Graph</h3></legend>
          <div id="password_chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
         </div>
@@ -409,26 +415,36 @@ $(document).ready(function(){
     <!-- Pwned Area -->
 
       <div class="col-xs-6 col-md-4" style="padding-left: 50px;">
-           <h4><b><u>Check for a Compromised Account</u></b></h4>
 
+             <legend><h3> Dark Web - Compromised Account</h3></legend>
                       This feature allows you to check for a compromise account found in the dark web:
                      <br>
-                     Warning! user input is sent over the Internet!
-                    <br>
-                    <form id="form-signin" action="/summary" method="post" role="form">
-                     <input type=email name=username placeholder="username@company.com" required autofocus>
-                     <br>
+                        <div class="alert alert-warning">
+                          <strong>Warning!</strong> user input is sent over the Internet!.
+                        </div>
 
-                        <button class="btn btn-sm btn-primary btn-block" type="submit">Submit </button>
+                    <br>
+
+                    <form id="form-signin" action="/summary" method="post" role="form">
+
+
+                          <div class="col-lg-6">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="username@company.com" required autofocus>
+                              <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button">Go!</button>
+                              </span>
+                            </div>
+                          </div>
+
                     </form>
                       <br>
 
-                      <div id="response">
-                         <pre></pre>
-                     </div>
+
                       <br>
-                    Curtesy of: "Have I been pwned?"<br>
-                        https://haveibeenpwned.com
+                    <p><small>Curtesy of: "Have I been pwned?"<br>
+                                https://haveibeenpwned.com
+                    </small></p>
                     <br>
       </div>
 

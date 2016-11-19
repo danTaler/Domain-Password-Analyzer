@@ -61,7 +61,7 @@ def uploadedFile():
         a = full_company_name.strip().split('.')
 
         clientName = a[0]                                          # Company = a[0], com = a[1]
-
+        session['full_company_name'] = full_company_name
         session['client_name'] = clientName
 
 
