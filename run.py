@@ -73,6 +73,9 @@ def uploadedFile():
             filename = secure_filename(file_NTDS.filename)
 
             ''' Storing the file on local /uploads/ folder '''
+            upload_path = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
+            if not os.path.exists(upload_path):
+                os.mkdir(upload_path,777)
             file_NTDS.save(os.path.join(app.config['UPLOAD_FOLDER'],clientName+'_NTDS_'+filename))
 
             ''' Upload files class. Processing the files into Lists/Dictionary.
