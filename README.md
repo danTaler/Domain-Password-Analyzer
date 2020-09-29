@@ -1,3 +1,9 @@
+# -Unsupported version-
+
+I have no intention on updating this tool. Feel free to fork/clone, edit and share.
+
+
+
 # Domain Password Analyzer (DPA)
 
 DPA is a Windows Domain user/password analyzer and a visualizer assessment. This is a web based service that takes the following files as input:
